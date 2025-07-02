@@ -56,30 +56,42 @@ class _LoginPageState extends State<LoginPage> {
         final responseData = jsonDecode(response.body);
         print(responseData);
 
-        String userDeviceId = responseData['device_uuid'];
-        String? userIdOnDevice = sharedPreferences.getString("device_uuid");
-        userIdOnDevice = userIdOnDevice?.replaceAll(RegExp(r'[\[\]]'), '');
+        // String userDeviceId = responseData['device_uuid'];
+        // String? userIdOnDevice = sharedPreferences.getString("device_uuid");
+        // userIdOnDevice = userIdOnDevice?.replaceAll(RegExp(r'[\[\]]'), '');
+        //
+        // if (userDeviceId != userIdOnDevice) {
+        //   if (mounted) {
+        //     ScaffoldMessenger.of(context).showSnackBar(
+        //       const SnackBar(
+        //         content: Text(
+        //             "Login failed: This account is not registered on this device."),
+        //         backgroundColor: Colors.redAccent,
+        //       ),
+        //     );
+        //   }
+        //   return;
+        // }
 
-        if (userDeviceId != userIdOnDevice) {
+        if (response.statusCode == 200) {
+          final responseData = jsonDecode(response.body);
+          print(responseData);
+
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                    "Login failed: This account is not registered on this device."),
-                backgroundColor: Colors.redAccent,
+              SnackBar(
+                content: Text(responseData['message'] ?? 'Login successful'),
+                backgroundColor: Colors.green,
               ),
             );
           }
-          return;
-        }
 
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(responseData['message'] ?? 'Login successful'),
-              backgroundColor: Colors.green,
-            ),
-          );
+          await LocalStorage().setUserTypeData(selectedUserType!);
+          await LocalStorage().setUserNameData(usernameController.text.trim());
+
+          if (mounted) {
+            Navigator.pushReplacementNamed(context, '/dashboard');
+          }
         }
 
         await LocalStorage().setUserTypeData(selectedUserType!);

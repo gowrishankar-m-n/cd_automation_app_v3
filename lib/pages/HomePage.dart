@@ -14,7 +14,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
     String? deviceuuid = sharedPreferences.getString("device_uuid");
 
     if (deviceuuid == null || deviceuuid.isEmpty) {
-      Navigator.pushNamed(context, '/device_uuid');
+      Navigator.pushNamed(context, '/auth/login');
     } else {
       Navigator.pushNamed(context, '/auth/login');
     }
