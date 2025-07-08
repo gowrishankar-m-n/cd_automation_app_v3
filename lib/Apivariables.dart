@@ -1,6 +1,6 @@
 class Apivariables {
-  static const String baseUrl = 'http://10.0.2.2:5000';
-  static const String baseurlFastApi = 'http://10.0.2.2:5000';
+  static const String baseUrl = 'http://103.110.236.190:3000';
+  static const String baseurlFastApi = 'http://103.110.236.190:8000';
 
   static const String login_url = '$baseUrl/v1/api/auth/login';
 
